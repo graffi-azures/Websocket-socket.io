@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			.container {
+				display: flex;
+				width: 800px;
+				height: 600px;
+				padding: 0;
+				margin: auto;
+			}
+
+			.chat-cont {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				width: 70%;
+				border: 1px solid;
+				border-right: transparent;
+			
+				margin-bottom: 0;
+				background: #fff;
+			}
+
+			.chat-head {
+				height: 10%;
+				flex-basis: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.chat-body {
+				width: 100%;
+				height: 70%;
+				overflow: hidden;
+				padding-right: 12px;
+			}
+			.chat-body:hover {
+				overflow-y: scroll;
+			}
+			.chat-body::-webkit-scrollbar {
+				height: 10px;
+				width: 10px;
+				background-color: #f5f5f5;
+			}
+			.chat-body::-webkit-scrollbar-track {
+				border-radius: 10px;
+			}
+			.chat-body::-webkit-scrollbar-thumb {
+				border-radius: 10px;
+			}
+			.system .msgSystem {
+				text-align: center;
+			}
+			
+			.message-box {
+				display: block;
+				margin: 5px;
+			}
+			.message-box .avatar {
+				height: fit-content;
+			}
+			.myMessage {
+				width: 100%;
+				height: fit-content;
+				float: right;
+				display: flex;
+				flex-direction: row-reverse;
+			}
+			.myMessage .bublle-cont {
+				background-color: greenyellow;
+				padding: 8px;
+			}
+			.otherMessage {
+				width: 100%;
+				height: fit-content;
+				float: left;
+				display: flex;
+				flex-direction: row;
+			}
+			
+			.chat-foot {
+				flex-basis: 100%;
+				height: 20%;
+				display: flex;
+				align-items: stretch;
+				flex-wrap: wrap;
+				border-top: 1px solid;
+			}
+			.chat-foot .toolbar {
+				width: 100%;
+			}
+			.chat-foot .content {
+				flex-basis: 100%;
+				height: 75%;
+			}
+			.chat-foot .content .text {
+				height: 100%;
+				width: 100%;
+				border: none;
+				outline: none;
+				white-space: pre-wrap;
+			}
+			.chat-foot .action {
+				width: 100%;
+				display: flex;
+				justify-content: flex-end;
+				align-items: flex-end;
+				margin: 5px;
+			}
+			.chat-foot .action .desc {
+				font-weight: 100;
+			}
+			.emoji {
+				background: url('images/emoji.png');
+			}
+			.screenCut {
+				background: url('images/screenCut.png');
+			}
+			.fileInfo {
+				background: url('images/fileInfo.png');
+			}
+		
+			.triangle {
+				/* border-top: 50px solid #000; */
+				border-right: 50px solid transparent;
+				border-bottom: 50px solid #666;
+				border-left: 50px solid transparent;
+				width: 0;
+				height: 0;
+				/* background-color: #ccc; */
+			}
+
+			.avatar .now {
+				border: 2px solid green;
+				height: fit-content;
+				width: fit-content;
+			}
+
+			.avatar li {
+				display: inline-block;
+				list-style-type: none;
+			}
+
+			.user-list {
+				width: 30%;
+				border: 1px solid;
+			}
+
+			.header {
+				display: flex;
+				align-items: center;
+				line-height: 4em;
+			}
+
+			.title {
+				line-height: 50px;
+				background: skyblue;
+				color: #fff;
+			}
+
+			.user {
+				list-style-type: none;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- css三角形 -->
+		<!-- <div class="triangle"></div> -->
+		<div class="login-box" style="display: block;">
+			<h3>用户登录</h3>
+			<p>用户名</p>
+			<input type="text" placeholder="请输入用户名" id="username">
+			<p>选择头像</p>
+			<ul class="avatar" id="login-avatar">
+				<li class="now"><img src="images/avatar01.png" alt=""></li>
+				<li><img src="images/avatar02.png" alt=""></li>
+				<li><img src="images/avatar03.png" alt=""></li>
+				<li><img src="images/avatar04.png" alt=""></li>
+				<li><img src="images/avatar05.png" alt=""></li>
+				<li><img src="images/avatar06.png" alt=""></li>
+				<li><img src="images/avatar07.png" alt=""></li>
+				<li><img src="images/avatar08.png" alt=""></li>
+				<li><img src="images/avatar09.png" alt=""></li>
+				<li><img src="images/avatar10.png" alt=""></li>
+			</ul>
+			<button class="weui-btn" id="loginBtn">登录</button>
+		</div>
+		<div class="container" style="display: none;">
+			<!-- 聊天主窗口 -->
+			<div class="chat-cont">
+				<!-- 聊天信息窗口头部 -->
+				<div class="chat-head">
+					<h4>聊天室总人数???</h4>
+				</div>
+				<!-- 聊天信息窗口主体 -->
+				<div class="chat-body">
+					<!-- 系统广播消息 -->
+					<!-- <div class="system">
+						<p class="msgSystem">
+							<span class="content">***进入了群聊</span>
+						</p>
+					</div> -->
+					<!-- 自己发送的消息显示在右边 -->
+					<!-- <div class="message-box">
+						<div class="myMessage">
+							<img class="avatar" src="" alt="">
+							<div class="content">
+								<div class="bubble">
+									<div class="bublle-cont"></div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+					<!-- 别人发的消息显示在左边 -->
+					<!-- <div class="message-box">
+						<div class="otherMessage">
+							<img class="avatar" src="" alt="">
+							<div class="content">
+								<div class="nickname"></div>
+								<div class="bubble">
+									<div class="bublle-cont"></div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+				<!-- 聊天信息窗口底部 -->
+				<div class="chat-foot">
+					<!-- 工具栏 -->
+					<div class="toolbar">
+						<a href="javascript:;" title="表情" class="emoji"></a>
+						<a href="javascript:;" title="截图" class="screenCut"></a>
+						<a href="javascript:;" title="文件" class="fileInfo">
+							<label for="imgInfo"></label>
+							<input type="file" id="fileInfo" style="display: none;">
+						</a>
+					</div>
+					<!-- 内容输入区 -->
+					<div class="content">
+						<textarea class="text" id="content" contenteditable></textarea>
+					</div>
+					<!-- 发送按键 -->
+					<div class="action">
+						<span class="desc">按下Ctrl+Enter发送</span>
+						<a class="btn-send" id="btn-send" href="javascript:;">发送</a>
+					</div>
+				</div>
+			</div>
+			<!-- 用户列表 -->
+			<div class="user-list">
+				<div class="header">
+					<div class="avatar">
+						<img class="avatar-url" src="" alt="">
+					</div>
+					<div class="info">
+						<h3 class="username"></h3>
+					</div>
+				</div>
+				<div class="title">
+					<h3>用户列表</h3>
+				</div>
+				<ul>
+					<!-- <li class="user" v-for="item in ">
+						<div class="avatar">
+							<img src="" alt="">
+						</div>
+						<div class="name"></div>
+					</li> -->
+				</ul>
+			</div>
+		</div>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.js"></script>
+		<script>
+			// 1.和使用socket.io的服务器建立通信连接
+			let socket = io('http://localhost:3000')
+			let username
+			let avatar
+			socket.on('count', num => {
+				console.log(num);
+				// document.getElementById('#userNum').innerHTML(`当前在线人数${num}`)
+				// document.getElementById('#userNum').append()
+
+			})
+			// 2.登录
+			$('#login-avatar li').on('click', function() {
+				// 选择头像
+				$(this).addClass('now').siblings().removeClass('now');
+			})
+			$('#loginBtn').on('click', function() {
+				// 获取用户名
+				var username = $('#username').val().trim();
+				if (!username) {
+					alert('请输入用户名')
+					return
+				}
+				// 获取选中的头像
+				var avatar = $('#login-avatar li.now img').attr('src')
+
+				console.log(username, avatar);
+				// 发送登录事件给服务器
+				socket.emit('login', {
+					username: username,
+					avatar: avatar
+				})
+			})
+
+			// 监听登录成功事件
+			socket.on('LoginSuccess', data => {
+				// 显示聊天窗口,隐藏登录窗口
+				$('.login-box').fadeOut();
+				$('.container').fadeIn();
+				// 显示登录的用户名和头像
+				$('.avatar-url').attr('src', data.avatar)
+				$('.user-list .username').text(data.username)
+				
+				username = data.username
+				avatar = data.avatar
+
+			})
+			// 监听登录失败事件
+			socket.on('Loginfail', data => {
+				alert('用户名已存在')
+			})
+			// 监听新增用户事件
+			socket.on('addUser', data => {
+				// 添加一条广播的系统消息
+				$('.chat-body').append(`
+					<div class="system">
+						<p class="msgSystem">
+							<span class="content">${data.username}进入了群聊</span>
+						</p>
+					</div>
+					`)
+					scrollIntoView()
+			})
+			// 监听用户离线事件
+			socket.on('offUser', data => {
+				$('.chat-body').append(`
+					<div class="system">
+						<p class="msgSystem">
+							<span class="content">${data.username}离开了群聊</span>
+						</p>
+					</div>
+					`)
+					scrollIntoView()
+			})
+			// 监听用户列表事件(显示用户数量)
+			socket.on('userList', data => {
+				$('.user-list ul').empty();
+				data.forEach(item => {
+					$('.user-list ul').append(`
+						<li class="user">
+							<div class="avatar">
+								<img src="${item.avatar}" alt="">
+							</div>
+							<div class="name">${item.username}</div>
+						</li>
+						`)
+				})
+				$('.chat-head h4').text(`聊天室(${data.length})`)
+			})
+			// 3.聊天
+			$('#btn-send').on('click',function(){
+				let content = $('#content').val().trim()
+				$('#content').val('')
+				if(!content){
+					return alert('请输入内容')
+				}
+				// 把输入事件发送给服务端
+				socket.emit('sendMsg',{
+					msg:content,
+					username:username,
+					avatar:avatar
+				})
+				// 监听服务端接收到的所有用户聊天信息
+				socket.on('receiveMessage',data=>{
+					// 判断是当前用户发送的消息还是其他用户发送的信息
+					if(data.username===username){
+						$('.chat-body').append(`
+						<div class="message-box">
+							<div class="myMessage">
+								<img class="avatar" src="${data.avatar}" alt="">
+								<div class="content">
+									<div class="bubble">
+										<div class="bublle-cont">${data.msg}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						`)
+					}else{
+						$('.chat-body').append(`
+						<div class="message-box">
+							<div class="otherMessage">
+								<img class="avatar" src="${data.avatar}" alt="">
+								<div class="content">
+									<div class="nickname">${data.username}</div>
+									<div class="bubble">
+										<div class="bublle-cont">${data.msg}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						`)
+					}
+					scrollIntoView()
+				})
+				
+			})
+			// 4.发送文件
+			$('#fileInfo').on('change',function(){
+				let file = this.files[0]
+				// 将文件发送给服务器
+				let reader = new FileReader()
+				reader.readAsDataURL()//读取文件变成base64编码
+				reader.onload = function(){
+					console.log(reader.result);
+					// 把读取的文件发送给服务器
+					socket.emit('sendFile',{
+						username:username,
+						avatar:avatar,
+						file:reader.result
+					})
+				}
+			})
+			// 监听服务端接收到的所有用户发送的文件信息
+			socket.on('receiveFile',data=>{
+				// 判断是当前用户发送的消息还是其他用户发送的信息
+				if(data.username===username){
+					$('.chat-body').append(`
+					<div class="message-box">
+						<div class="myMessage">
+							<img class="avatar" src="${data.avatar}" alt="">
+							<div class="content">
+								<div class="bubble">
+									<img src="${data.file}">	
+								</div>
+							</div>
+						</div>
+					</div>
+					`)
+				}else{
+					$('.chat-body').append(`
+					<div class="message-box">
+						<div class="otherMessage">
+							<img class="avatar" src="${data.avatar}" alt="">
+							<div class="content">
+								<div class="nickname">${data.username}</div>
+								<div class="bubble">
+									<img src="${data.file}">
+								</div>
+							</div>
+						</div>
+					</div>
+					`)
+				}
+				// 等待图片加载完成再拉到底部
+				$('.chat-body img:last').on('load',function(){
+					scrollIntoView()
+				})
+			})
+			
+			function scrollIntoView(){
+				$('.chat-body').children(':last').get(0).scrollIntoView(false)
+			}
+		</script>
+		<!-- ---------------------------------------------------- -->
+		<!-- <script>
+			// 和使用websocket的服务端通信
+			let value = document.getElementById('inp').value;
+			function send(){
+				// 实例化对象
+				let ws = new WebSocket('ws://localhost:3000')
+				// 开启连接后触发open事件
+				ws.onopen = function(event){
+					console.log('连接开启');
+					ws.send(value)
+				}
+				// 接收到服务端的数据后触发message事件
+				ws.onmessage = function(event){
+					// ws.send('这是客户端发送的第二条信息')
+					console.log('这是服务端发送给客户端的信息:'+event.data);
+					ws.close();
+				}
+				// 当连接关闭时触发close事件
+				ws.onclose = function(event){
+					console.log('服务器连接关闭了');
+				}
+				// 当通信过程发生错误关闭连接时触发error事件
+				ws.onerror = function(event){
+					console.log('通信过程中发送错误导致连接关闭了'+event.onerror);
+				}
+				
+				// document.querySelector('h1').addEventListener('message',function(){
+				// 	console.log('received server data');
+				// })
+			}
+	
+			// 节流
+			function throttle(fn,wait){
+				let timer = null;
+				return function(){
+					let context = this;
+					let args = arguments;
+					if(!timer){
+						timer = setTimeout(()=>{
+							fn.apply(context,args)
+							timer = null;
+						},wait)
+					}
+				}
+			}
+			// 防抖
+			function debounce(fn,wait){
+				let timer = null;
+				return function(){
+					let context = this;
+					let args = arguments;
+					if(!timer){
+						timer = setTimeout(function(){
+							fn.apply(context,args)
+						},wait)
+					}else{
+						clearTimeout(timer);
+					}
+				}
+			}
+		</script> -->
+	</body>
+</html>
